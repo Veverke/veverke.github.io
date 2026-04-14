@@ -1,0 +1,31 @@
+{
+  "name": "veverke.github.io",
+  "version": "1.0.0",
+  "description": "What are Yizkor Books ?\r Quoting [wikipedia](https://en.wikipedia.org/wiki/Yizkor_books): \r > Yizkor books are memorial books commemorating a Jewish community destroyed during the Holocaust. The books are published by former residents or landsmanshaft societies as remembrances of homes, people and ways of life lost during World War II. Yizkor books usually focus > on a town but may include sections on neighboring smaller communities.\r >\r > Most of these books are written in Yiddish or Hebrew, some also include sections in English or other languages, depending on where they were published.\r >\r > Since the 1990s, many of these books, or sections of them have been translated into English, digitized, and made available online.",
+  "main": "worker.sql-wasm.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "serve . -p 3000",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Veverke/veverke.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Veverke/veverke.github.io/issues"
+  },
+  "homepage": "https://github.com/Veverke/veverke.github.io#readme",
+  "devDependencies": {
+    "serve": "^14.2.6",
+    "vitest": "^4.1.4"
+  }
+}

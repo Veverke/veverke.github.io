@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layout 3 — Modern Clean</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --border-focus: #93c5fd;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #1d4ed8;
+      --primary-h: #1e40af;
+      --primary-light: #dbeafe;
+      --success: #059669;
+      --error: #dc2626;
+      --badge-bg: #eff6ff;
+      --badge-border: #bfdbfe;
+      --badge-text: #1d4ed8;
+      --r: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #e2e8f0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      max-width: 860px; margin: 0 auto;
+      min-height: 100vh; box-shadow: var(--shadow-md);
+    }
+
+    /* HEADER */
+    header { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; }
+    .header-top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+    }
+    .logo-mark {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-icon {
+      width: 34px; height: 34px; background: var(--primary); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: white; font-weight: 700;
+    }
+    .logo-text { font-size: 1.05rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .logo-sub { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
+    .header-nav { display: flex; align-items: center; gap: 6px; }
+    .nav-link {
+      color: var(--muted); font-size: 0.82rem; text-decoration: none;
+      padding: 6px 12px; border-radius: 6px; transition: all 0.15s;
+    }
+    .nav-link:hover { background: var(--bg); color: var(--text); }
+    .gh-btn {
+      background: var(--text); color: white; font-size: 0.8rem;
+      padding: 7px 14px; border-radius: 6px; text-decoration: none;
+      font-weight: 500; letter-spacing: 0.02em; transition: opacity 0.15s;
+    }
+    .gh-btn:hover { opacity: 0.85; }
+    .header-body { padding: 24px 0; }
+    .page-title { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .page-title a { color: var(--primary); text-decoration: none; }
+    .page-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+    .book-count-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      color: var(--badge-text); padding: 3px 10px; border-radius: 20px;
+      font-size: 0.74rem; font-weight: 600; margin-top: 8px;
+    }
+
+    /* CONTENT */
+    .content { padding: 28px 40px 48px; }
+
+    /* ABOUT */
+    details.about {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    details.about summary {
+      padding: 14px 16px; font-size: 0.84rem; font-weight: 600;
+      cursor: pointer; list-style: none; display: flex; align-items: center;
+      gap: 8px; color: var(--muted);
+    }
+    details.about summary::marker, details.about summary::-webkit-details-marker { display: none; }
+    details.about summary::before {
+      content: ''; display: block; width: 16px; height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M7.293 4.707a1 1 0 011.414 0L13 9l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 9 7.293 5.707a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E") no-repeat center / contain;
+      transition: transform 0.2s;
+    }
+    details.about[open] summary::before { transform: rotate(90deg); }
+    .about-body {
+      padding: 0 16px 16px; font-size: 0.86rem; color: var(--muted);
+      line-height: 1.75; border-top: 1px solid var(--border);
+    }
+    .about-body p { padding-top: 14px; }
+    .about-body strong { color: var(--text); }
+
+    /* SECTION LABEL */
+    .sec-label {
+      display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+
+    /* BOOK PANEL */
+    .book-panel {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 20px; margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .book-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .select-wrap { position: relative; flex: 1; min-width: 200px; }
+    .select-wrap::after {
+      content: ''; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 4px solid transparent; border-right: 4px solid transparent;
+      border-top: 5px solid var(--muted); pointer-events: none;
+    }
+    .styled-select {
+      width: 100%; appearance: none; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 9px 32px 9px 12px; font-size: 0.9rem;
+      color: var(--text); cursor: pointer; font-family: inherit;
+    }
+    .styled-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29,78,216,0.1); }
+    .lang-badge {
+      background: #fef9c3; border: 1px solid #fde047; color: #854d0e;
+      padding: 5px 12px; border-radius: 20px; font-size: 0.76rem; font-weight: 600;
+    }
+    .tf-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      color: var(--primary); font-size: 0.8rem; text-decoration: none; font-weight: 500;
+    }
+    .tf-link:hover { text-decoration: underline; }
+    .pg-badge {
+      background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+      padding: 5px 12px; border-radius: 6px; font-size: 0.76rem;
+    }
+
+    /* SEARCH */
+    .search-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 20px; margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .search-type-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .type-pill {
+      background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+      padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 500;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+    }
+    .type-pill.active { background: var(--primary-light); border-color: var(--badge-border); color: var(--primary); font-weight: 600; }
+    .type-pill:hover:not(.active) { background: var(--border); color: var(--text); }
+    .search-row { display: flex; gap: 8px; }
+    .search-input {
+      flex: 1; border: 1px solid var(--border); border-radius: 6px;
+      padding: 11px 16px; font-size: 0.95rem; color: var(--text);
+      background: var(--bg); font-family: inherit;
+    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29,78,216,0.1); background: white; }
+    .search-btn {
+      background: var(--primary); color: white; border: none; border-radius: 6px;
+      padding: 0 24px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      font-family: inherit; letter-spacing: 0.02em; transition: background 0.15s; white-space: nowrap;
+    }
+    .search-btn:hover { background: var(--primary-h); }
+
+    /* RESULTS */
+    .results-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .results-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg);
+    }
+    .results-info { display: flex; align-items: center; gap: 10px; }
+    .count-tag {
+      background: #dcfce7; border: 1px solid #86efac; color: #15803d;
+      padding: 3px 11px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+    }
+    .results-desc { font-size: 0.84rem; color: var(--muted); }
+    .results-desc strong { color: var(--text); }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--bg); }
+    th {
+      padding: 11px 20px; text-align: center; font-size: 0.72rem;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+      font-weight: 600; border-bottom: 1px solid var(--border);
+    }
+    td { padding: 12px 20px; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #f0f4ff; }
+    .pg-link {
+      display: inline-block; background: var(--primary); color: white;
+      padding: 4px 14px; border-radius: 6px; text-decoration: none;
+      font-size: 0.82rem; font-weight: 600; transition: background 0.15s;
+    }
+    .pg-link:hover { background: var(--primary-h); }
+    .rtl { direction: rtl; unicode-bidi: embed; font-size: 1.05rem; }
+
+    /* INSTRUCTIONS */
+    details.info {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); margin-top: 20px; box-shadow: var(--shadow);
+    }
+    details.info summary {
+      padding: 14px 16px; font-size: 0.84rem; font-weight: 600; cursor: pointer;
+      list-style: none; display: flex; align-items: center; gap: 8px; color: var(--muted);
+    }
+    details.info summary::marker, details.info summary::-webkit-details-marker { display: none; }
+    details.info summary::before {
+      content: ''; display: block; width: 16px; height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M7.293 4.707a1 1 0 011.414 0L13 9l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 9 7.293 5.707a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E") no-repeat center / contain;
+      transition: transform 0.2s;
+    }
+    details.info[open] summary::before { transform: rotate(90deg); }
+    .info-body { padding: 0 16px 18px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+    .info-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 16px; }
+    .info-cols h4 { font-size: 0.78rem; font-weight: 700; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .info-cols ol, .info-cols ul { padding-left: 16px; }
+    .info-cols li { margin-bottom: 5px; }
+    .info-cols a { color: var(--primary); text-decoration: none; }
+    .info-cols a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer {
+      background: var(--white); border-top: 1px solid var(--border);
+      padding: 18px 40px; display: flex; align-items: center;
+      justify-content: space-between; font-size: 0.76rem; color: var(--muted); flex-wrap: wrap; gap: 10px;
+    }
+    .footer-links { display: flex; gap: 16px; }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); text-decoration: underline; }
+
+    .demo-tag {
+      position: fixed; top: 12px; right: 12px; z-index: 999;
+      background: var(--primary); color: white; border-radius: 6px;
+      padding: 5px 12px; font-family: monospace; font-size: 0.68rem; letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-tag">DEMO 3 / 6 — MODERN CLEAN</div>
+
+<header>
+  <div class="header-top">
+    <div class="logo-mark">
+      <div class="logo-icon">יב</div>
+      <div>
+        <div class="logo-text">Yizkor Books</div>
+        <div class="logo-sub">Digital Search Archive</div>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a class="nav-link" href="#">Getting Started</a>
+      <a class="nav-link" href="#">Issues</a>
+      <a class="nav-link" href="#">Feedback</a>
+      <a class="gh-btn" href="#">⑂ GitHub</a>
+    </nav>
+  </div>
+  <div class="header-body">
+    <h1 class="page-title">Search <a href="#">Yizkor Books</a></h1>
+    <p class="page-desc">Find names and terms across digitized Yizkor memorial books — page, line, and word precision.</p>
+    <span class="book-count-badge">● 11 books available</span>
+  </div>
+</header>
+
+<div class="content">
+
+  <details class="about">
+    <summary>What are Yizkor Books?</summary>
+    <div class="about-body">
+      <p>Yizkor books are memorial books commemorating Jewish communities destroyed during the Holocaust, published by former residents as remembrances of homes, people, and ways of life lost during World War II.</p>
+      <p>Most are written in Yiddish or Hebrew. <strong>This site makes scanned pages of these books digitally searchable</strong>, linking results directly to the original NYPL image scans.</p>
+    </div>
+  </details>
+
+  <span class="sec-label">1 — Choose a book</span>
+  <div class="book-panel">
+    <div class="book-row">
+      <div class="select-wrap">
+        <select class="styled-select">
+          <option>Ataci</option><option>Briceni</option><option selected>Briceva</option>
+          <option>Edinet</option><option>Khotin</option><option>Lipcani 1</option>
+          <option>Lipcani 2</option><option>Novoselytsia</option><option>Secureni</option>
+          <option>Wyszogrod</option><option>Zychlin</option>
+        </select>
+      </div>
+      <span class="lang-badge">Hebrew</span>
+      <a class="tf-link" href="#">JewishGen TownFinder ↗</a>
+      <span class="pg-badge">243 pages</span>
+    </div>
+  </div>
+
+  <span class="sec-label">2 — Search</span>
+  <div class="search-card">
+    <div class="search-type-row">
+      <button class="type-pill active">Exact match</button>
+      <button class="type-pill">Contains</button>
+    </div>
+    <div class="search-row">
+      <input class="search-input" type="text" placeholder="Enter a name or term in Hebrew, Yiddish, or transliteration…" dir="auto">
+      <button class="search-btn">Search</button>
+    </div>
+  </div>
+
+  <span class="sec-label">Results</span>
+  <div class="results-card">
+    <div class="results-header">
+      <div class="results-info">
+        <span class="count-tag">47 matches</span>
+        <span class="results-desc">for <strong>"ברנשטיין"</strong> in <strong>Briceva</strong></span>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Page</th><th>Line</th><th>Word</th></tr></thead>
+      <tbody>
+        <tr><td><a class="pg-link" href="#">12</a></td><td>3</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">27</a></td><td>11</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">41</a></td><td>7</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">58</a></td><td>2</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">72</a></td><td>15</td><td class="rtl">ברנשטיין</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details class="info">
+    <summary>Instructions &amp; Known Issues</summary>
+    <div class="info-body">
+      <div class="info-cols">
+        <div>
+          <h4>How to Use</h4>
+          <ol>
+            <li>Pick a Yizkor Book from the drop-down above.</li>
+            <li>Enter a search term in the book's language (Hebrew or Yiddish).</li>
+            <li>Click the Page number to open the original scan in a new tab.</li>
+            <li>Use the line and word numbers to find your term in the scan.</li>
+          </ol>
+        </div>
+        <div>
+          <h4>Known Issues</h4>
+          <ul>
+            <li>Only exact and contains matches are currently supported.</li>
+            <li>Inconsistent line numbering due to variable page layouts.</li>
+            <li>Report issues on <a href="#">GitHub</a> or via the <a href="#">feedback form</a>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </details>
+
+</div>
+
+<footer>
+  <span>Yizkor Books Digital Search · Open Source Project</span>
+  <div class="footer-links">
+    <a href="#">Feedback</a>
+    <a href="#">Report Issue</a>
+    <a href="#">Getting Started Wiki</a>
+  </div>
+</footer>
+
+</body>
+</html>

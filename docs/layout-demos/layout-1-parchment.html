@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layout 1 — Parchment Heritage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf3e0;
+      --surface: #f0e6cc;
+      --surface-alt: #e8d8b8;
+      --border: #c4a97a;
+      --text: #2c1810;
+      --muted: #6b4f3a;
+      --primary: #7a4f2a;
+      --gold: #c9a84c;
+      --gold-dark: #9a7a32;
+      --link: #5b3a1e;
+      --error: #8b1a1a;
+      --font-d: 'Playfair Display', Georgia, serif;
+      --font-b: 'Lora', Georgia, serif;
+      --r: 4px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #3d2a1a; }
+    body {
+      font-family: var(--font-b);
+      color: var(--text);
+      background: var(--bg);
+      max-width: 960px;
+      margin: 0 auto;
+      min-height: 100vh;
+      box-shadow: 0 0 60px rgba(0,0,0,0.5);
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(160deg, #1e0e06 0%, #3d2010 60%, #1e0e06 100%);
+      padding: 36px 48px 28px;
+      border-bottom: 3px solid var(--gold);
+    }
+    .header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+    .eyebrow {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .eyebrow::before, .eyebrow::after {
+      content: ''; display: block; height: 1px; width: 30px;
+      background: var(--gold); opacity: 0.4;
+    }
+    h1 { font-family: var(--font-d); font-size: 2.5rem; font-weight: 700; color: #f5e6c8; line-height: 1.1; }
+    h1 a { color: #e8c97a; text-decoration: none; }
+    h1 a:hover { text-decoration: underline; text-decoration-color: var(--gold); }
+    .tagline { font-family: var(--font-d); font-style: italic; font-size: 0.95rem; color: #c8a87a; margin-top: 8px; }
+    .header-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; margin-top: 4px; }
+    .github-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(201,168,76,0.12); border: 1px solid var(--gold);
+      color: var(--gold); padding: 6px 14px; border-radius: 3px;
+      font-size: 0.76rem; text-decoration: none; letter-spacing: 0.05em;
+      transition: background 0.2s;
+    }
+    .github-badge:hover { background: rgba(201,168,76,0.22); }
+    .book-count { font-size: 0.76rem; color: #c8a87a; }
+
+    /* CONTENT */
+    .content { padding: 32px 48px 40px; }
+
+    /* ABOUT */
+    details.about {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); margin-bottom: 24px; overflow: hidden;
+    }
+    details.about summary {
+      padding: 12px 18px; font-size: 0.82rem; letter-spacing: 0.06em;
+      cursor: pointer; list-style: none; display: flex; align-items: center;
+      gap: 8px; color: var(--muted); font-weight: 600;
+    }
+    details.about summary::marker, details.about summary::-webkit-details-marker { display: none; }
+    details.about summary::before { content: '▸'; font-size: 0.7rem; transition: transform 0.2s; }
+    details.about[open] summary::before { transform: rotate(90deg); }
+    .about-body {
+      padding: 14px 18px 18px; font-size: 0.87rem; line-height: 1.75;
+      border-top: 1px solid var(--border); color: var(--muted);
+    }
+    .about-body p + p { margin-top: 8px; }
+
+    /* SECTION LABEL */
+    .sec-label {
+      display: block; font-size: 0.65rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+
+    /* BOOK SELECTOR */
+    .book-panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px 22px; margin-bottom: 20px;
+    }
+    .book-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .select-wrap { position: relative; flex: 1; min-width: 200px; }
+    .select-wrap::after {
+      content: '▾'; position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%); font-size: 0.75rem; color: var(--muted); pointer-events: none;
+    }
+    .styled-select {
+      width: 100%; appearance: none; background: var(--bg);
+      border: 1px solid var(--border); border-radius: var(--r);
+      padding: 9px 32px 9px 12px; font-family: var(--font-b); font-size: 0.93rem;
+      color: var(--text); cursor: pointer;
+    }
+    .styled-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+    .lang-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #fdf0d0; border: 1px solid var(--gold); color: var(--gold-dark);
+      padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+    }
+    .lang-pill::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    .tf-link {
+      color: var(--link); font-size: 0.8rem; text-decoration: none;
+      border-bottom: 1px dotted var(--link); padding-bottom: 1px;
+    }
+    .tf-link:hover { border-bottom-style: solid; }
+    .pages-txt { font-size: 0.78rem; color: var(--muted); }
+
+    /* SEARCH */
+    .search-bar { display: flex; height: 50px; margin-bottom: 28px; }
+    .toggle-group {
+      display: flex; border: 1px solid var(--border); border-right: none;
+      border-radius: var(--r) 0 0 var(--r); overflow: hidden;
+    }
+    .t-btn {
+      background: var(--surface); border: none; padding: 0 14px;
+      font-family: var(--font-b); font-size: 0.78rem; cursor: pointer;
+      color: var(--muted); border-right: 1px solid var(--border); transition: all 0.15s;
+    }
+    .t-btn.active { background: var(--gold); color: #1e0e06; font-weight: 700; }
+    .t-btn:last-child { border-right: none; }
+    .search-input {
+      flex: 1; border: 1px solid var(--border); border-left: none; border-right: none;
+      padding: 0 16px; font-family: var(--font-b); font-size: 1rem; color: var(--text);
+      background: white;
+    }
+    .search-input::placeholder { color: #b0977a; font-style: italic; }
+    .search-input:focus { outline: none; border-color: var(--gold); }
+    .search-btn {
+      background: var(--primary); color: #f5e6c8; border: 1px solid var(--primary);
+      border-radius: 0 var(--r) var(--r) 0; padding: 0 26px;
+      font-family: var(--font-b); font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      letter-spacing: 0.05em; transition: background 0.15s;
+    }
+    .search-btn:hover { background: #5c3a1e; }
+
+    /* ORNAMENT */
+    .ornament { text-align: center; color: var(--border); font-size: 1rem; letter-spacing: 0.6em; margin: 22px 0 18px; }
+
+    /* RESULTS */
+    .results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .count-badge {
+      background: var(--gold); color: #1e0e06; padding: 3px 12px;
+      border-radius: 20px; font-size: 0.8rem; font-weight: 700; font-family: var(--font-b);
+    }
+    .results-desc { font-size: 0.85rem; color: var(--muted); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    thead tr { background: var(--surface-alt); }
+    th {
+      padding: 11px 18px; text-align: center; font-family: var(--font-b);
+      font-size: 0.67rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600;
+    }
+    td { padding: 10px 18px; text-align: center; border-bottom: 1px solid rgba(196,169,122,0.25); }
+    tbody tr:nth-child(even) { background: rgba(240,230,204,0.4); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: rgba(201,168,76,0.08); }
+    .pg-link {
+      display: inline-block; background: var(--primary); color: #f5e6c8;
+      padding: 4px 13px; border-radius: 3px; text-decoration: none;
+      font-size: 0.83rem; font-weight: 600; transition: background 0.15s;
+    }
+    .pg-link:hover { background: #5c3a1e; }
+    .rtl { direction: rtl; unicode-bidi: embed; font-size: 1.05rem; }
+
+    /* INSTRUCTIONS */
+    details.info {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); margin-top: 28px;
+    }
+    details.info summary {
+      padding: 13px 18px; font-size: 0.82rem; cursor: pointer; list-style: none;
+      display: flex; align-items: center; gap: 8px; color: var(--muted); font-weight: 600;
+    }
+    details.info summary::marker, details.info summary::-webkit-details-marker { display: none; }
+    details.info summary::before { content: '▸'; font-size: 0.7rem; }
+    details.info[open] summary::before { content: '▾'; }
+    .info-body {
+      padding: 14px 22px 18px; border-top: 1px solid var(--border);
+      font-size: 0.86rem; color: var(--muted); line-height: 1.75;
+    }
+    .info-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .info-cols h4 { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; }
+    .info-cols ol, .info-cols ul { padding-left: 16px; }
+    .info-cols li { margin-bottom: 6px; }
+    .info-cols a { color: var(--link); }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface-alt); border-top: 1px solid var(--border);
+      padding: 18px 48px; display: flex; align-items: center;
+      justify-content: space-between; font-size: 0.76rem; color: var(--muted);
+      flex-wrap: wrap; gap: 12px;
+    }
+    footer a { color: var(--link); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 16px; }
+
+    /* DEMO LABEL */
+    .demo-tag {
+      position: fixed; top: 12px; right: 12px; z-index: 999;
+      background: #1e0e06; color: var(--gold); border: 1px solid var(--gold);
+      padding: 5px 12px; border-radius: 3px; font-family: monospace;
+      font-size: 0.68rem; letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-tag">DEMO 1 / 6 — PARCHMENT HERITAGE</div>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="eyebrow">Digital Jewish Archive</div>
+      <h1>Searchable <a href="#">Yizkor Books</a></h1>
+      <p class="tagline">Preserving the memory of Jewish communities lost in the Holocaust</p>
+    </div>
+    <div class="header-side">
+      <a class="github-badge" href="#">⑂ Fork on GitHub</a>
+      <span class="book-count">11 books indexed</span>
+    </div>
+  </div>
+</header>
+
+<div class="content">
+
+  <details class="about">
+    <summary>About Yizkor Books</summary>
+    <div class="about-body">
+      <p>Yizkor books are memorial books commemorating a Jewish community destroyed during the Holocaust. Published by former residents as remembrances of homes, people, and ways of life lost during World War II.</p>
+      <p>Most books are written in Yiddish or Hebrew. Since the 1990s, many have been digitized and made available online. <strong>This site makes scanned pages of these books digitally searchable.</strong></p>
+    </div>
+  </details>
+
+  <span class="sec-label">1 — Select a book</span>
+  <div class="book-panel">
+    <div class="book-row">
+      <div class="select-wrap">
+        <select class="styled-select">
+          <option>Ataci</option><option>Briceni</option><option selected>Briceva</option>
+          <option>Edinet</option><option>Khotin</option><option>Lipcani 1</option>
+          <option>Lipcani 2</option><option>Novoselytsia</option><option>Secureni</option>
+          <option>Wyszogrod</option><option>Zychlin</option>
+        </select>
+      </div>
+      <span class="lang-pill">Hebrew</span>
+      <a class="tf-link" href="#">JewishGen TownFinder ↗</a>
+      <span class="pages-txt">243 pages</span>
+    </div>
+  </div>
+
+  <span class="sec-label">2 — Search</span>
+  <div class="search-bar">
+    <div class="toggle-group">
+      <button class="t-btn active">Exact</button>
+      <button class="t-btn">Contains</button>
+    </div>
+    <input class="search-input" type="text" placeholder="Enter a name or term in Hebrew, Yiddish, or transliteration…" dir="auto">
+    <button class="search-btn">Search</button>
+  </div>
+
+  <div class="ornament">— ✦ —</div>
+
+  <div class="results-bar">
+    <span class="results-desc">
+      <span class="count-badge">47 results</span>&nbsp;&nbsp;
+      for <em>"ברנשטיין"</em> in <u>Briceva</u>
+    </span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Page</th><th>Line</th><th>Word</th></tr></thead>
+      <tbody>
+        <tr><td><a class="pg-link" href="#">12</a></td><td>3</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">27</a></td><td>11</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">41</a></td><td>7</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">58</a></td><td>2</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-link" href="#">72</a></td><td>15</td><td class="rtl">ברנשטיין</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details class="info">
+    <summary>Instructions &amp; Known Issues</summary>
+    <div class="info-body">
+      <div class="info-cols">
+        <div>
+          <h4>How to Use</h4>
+          <ol>
+            <li>Pick a Yizkor Book from the drop-down above.</li>
+            <li>Enter a search term in the book's language (Hebrew or Yiddish).</li>
+            <li>Click the <strong>Page</strong> number to open the original scan in a new tab.</li>
+            <li>Follow the line and word numbers to locate your term within the scan.</li>
+          </ol>
+        </div>
+        <div>
+          <h4>Known Issues</h4>
+          <ul>
+            <li>Only exact and contains matches are currently supported.</li>
+            <li>Inconsistent line numbering due to variable book layouts.</li>
+            <li>Report issues on <a href="#">GitHub</a> or via the <a href="#">feedback form</a>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </details>
+
+</div>
+
+<footer>
+  <span>Yizkor Books Digital Search · Open Source Project</span>
+  <div class="footer-links">
+    <a href="#">Feedback Form</a>
+    <a href="#">Report an Issue</a>
+    <a href="#">Getting Started Wiki</a>
+  </div>
+</footer>
+
+</body>
+</html>

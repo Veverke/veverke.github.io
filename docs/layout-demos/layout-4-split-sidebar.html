@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layout 4 — Split Sidebar Dashboard</title>
+  <style>
+    :root {
+      --sidebar-bg: #1e2d45;
+      --sidebar-hover: #263550;
+      --sidebar-border: #2e4060;
+      --sidebar-text: #a8bed8;
+      --sidebar-heading: #cfe0f5;
+      --sidebar-active: #3b82f6;
+      --main-bg: #f1f5f9;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0ea5e9;
+      --accent-h: #0284c7;
+      --accent-light: #e0f2fe;
+      --accent-border: #7dd3fc;
+      --teal: #0d9488;
+      --r: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #111827; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      color: var(--text); max-width: 1100px; margin: 0 auto;
+      min-height: 100vh; display: flex; flex-direction: column;
+      box-shadow: 0 0 60px rgba(0,0,0,0.4);
+    }
+
+    /* LAYOUT */
+    .app { display: flex; flex: 1; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 280px; flex-shrink: 0;
+      background: var(--sidebar-bg); color: var(--sidebar-text);
+      display: flex; flex-direction: column;
+      border-right: 1px solid var(--sidebar-border);
+    }
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .site-name { font-size: 1.1rem; font-weight: 700; color: white; line-height: 1.2; }
+    .site-sub { font-size: 0.72rem; color: var(--sidebar-text); margin-top: 4px; letter-spacing: 0.03em; }
+    .sidebar-section { padding: 20px 16px 12px; }
+    .sidebar-section-title {
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #5a7a9a; margin-bottom: 12px; padding: 0 4px; font-weight: 600;
+    }
+
+    /* BOOK LIST */
+    .book-list { display: flex; flex-direction: column; gap: 2px; }
+    .book-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 10px; border-radius: 6px; cursor: pointer;
+      transition: background 0.15s; border: 1px solid transparent;
+    }
+    .book-item:hover { background: var(--sidebar-hover); }
+    .book-item.active {
+      background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3);
+      color: white;
+    }
+    .book-item.active .book-name { color: white; font-weight: 600; }
+    .book-name { font-size: 0.85rem; color: var(--sidebar-heading); line-height: 1.2; }
+    .book-lang {
+      font-size: 0.64rem; background: rgba(255,255,255,0.07); padding: 2px 7px;
+      border-radius: 3px; color: var(--sidebar-text); white-space: nowrap;
+    }
+    .book-item.active .book-lang { background: rgba(59,130,246,0.25); color: #93c5fd; }
+
+    /* SIDEBAR LINKS */
+    .sidebar-links { padding: 16px; border-top: 1px solid var(--sidebar-border); margin-top: auto; }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border-radius: 6px; font-size: 0.82rem;
+      color: var(--sidebar-text); text-decoration: none; transition: all 0.15s;
+    }
+    .sidebar-link:hover { background: var(--sidebar-hover); color: white; }
+    .sidebar-link .icon { width: 16px; text-align: center; font-size: 0.85rem; }
+
+    /* MAIN */
+    .main { flex: 1; background: var(--main-bg); display: flex; flex-direction: column; overflow: hidden; }
+
+    /* MAIN HEADER */
+    .main-header {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 18px 32px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+    .breadcrumb .active-book { color: var(--text); font-weight: 600; }
+    .breadcrumb .sep { color: var(--border); }
+    .header-badges { display: flex; align-items: center; gap: 8px; }
+    .lang-chip {
+      background: #fef9c3; border: 1px solid #fde047; color: #854d0e;
+      padding: 4px 11px; border-radius: 20px; font-size: 0.74rem; font-weight: 600;
+    }
+    .pg-chip {
+      background: var(--main-bg); border: 1px solid var(--border);
+      color: var(--muted); padding: 4px 11px; border-radius: 20px; font-size: 0.74rem;
+    }
+    .tf-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--accent-light); border: 1px solid var(--accent-border);
+      color: var(--accent-h); padding: 5px 12px; border-radius: 6px;
+      font-size: 0.76rem; font-weight: 500; text-decoration: none; transition: background 0.15s;
+    }
+    .tf-btn:hover { background: #bae6fd; }
+
+    /* MAIN CONTENT */
+    .main-body { padding: 28px 32px; flex: 1; overflow-y: auto; }
+
+    /* SEARCH */
+    .search-panel {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 20px; margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .search-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 10px; display: block; }
+    .search-row { display: flex; gap: 8px; align-items: stretch; }
+    .search-input {
+      flex: 1; border: 1px solid var(--border); border-radius: 6px;
+      padding: 11px 14px; font-size: 0.93rem; color: var(--text);
+      background: var(--main-bg); font-family: inherit;
+    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); background: white; }
+    .type-toggle {
+      display: flex; border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden;
+    }
+    .t-btn {
+      background: var(--main-bg); border: none; padding: 0 14px;
+      font-size: 0.8rem; cursor: pointer; color: var(--muted);
+      border-right: 1px solid var(--border); font-family: inherit; transition: all 0.15s;
+    }
+    .t-btn.active { background: var(--accent); color: white; font-weight: 600; }
+    .t-btn:last-child { border-right: none; }
+    .search-btn {
+      background: var(--accent); color: white; border: none; border-radius: 6px;
+      padding: 0 22px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: background 0.15s;
+    }
+    .search-btn:hover { background: var(--accent-h); }
+
+    /* RESULTS */
+    .results-panel {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .results-top {
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--main-bg);
+    }
+    .results-top .label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .results-meta-row { display: flex; align-items: center; gap: 8px; }
+    .count-pill {
+      background: #dcfce7; border: 1px solid #86efac; color: #166534;
+      padding: 3px 11px; border-radius: 20px; font-size: 0.76rem; font-weight: 700;
+    }
+    .results-desc { font-size: 0.82rem; color: var(--muted); }
+    .results-desc strong { color: var(--text); }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--main-bg); }
+    th {
+      padding: 10px 20px; text-align: center; font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+      font-weight: 600; border-bottom: 1px solid var(--border);
+    }
+    td { padding: 11px 20px; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #f0f9ff; }
+    .pg-btn {
+      display: inline-block; background: var(--accent); color: white;
+      padding: 4px 14px; border-radius: 6px; text-decoration: none;
+      font-size: 0.82rem; font-weight: 600; transition: background 0.15s;
+    }
+    .pg-btn:hover { background: var(--accent-h); }
+    .rtl { direction: rtl; unicode-bidi: embed; font-size: 1.05rem; }
+
+    /* ABOUT (inline in main) */
+    .about-panel {
+      background: var(--accent-light); border: 1px solid var(--accent-border);
+      border-radius: var(--r); padding: 16px 20px; margin-bottom: 24px;
+      font-size: 0.84rem; color: #0c4a6e; line-height: 1.65;
+    }
+    .about-panel strong { color: #075985; }
+
+    /* INSTRUCTIONS */
+    details.info {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); margin-top: 20px; box-shadow: var(--shadow);
+    }
+    details.info summary { padding: 13px 18px; font-size: 0.83rem; font-weight: 600; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; color: var(--muted); }
+    details.info summary::marker, details.info summary::-webkit-details-marker { display: none; }
+    details.info summary::before { content: '›'; font-size: 1.1rem; display: inline-block; transition: transform 0.2s; }
+    details.info[open] summary::before { transform: rotate(90deg); }
+    .info-body { padding: 14px 20px 18px; border-top: 1px solid var(--border); font-size: 0.84rem; color: var(--muted); line-height: 1.75; }
+    .info-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .info-cols h4 { font-size: 0.75rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .info-cols ol, .info-cols ul { padding-left: 16px; }
+    .info-cols li { margin-bottom: 5px; }
+    .info-cols a { color: var(--accent); text-decoration: none; }
+    .info-cols a:hover { text-decoration: underline; }
+
+    /* SIDEBAR FOOTER */
+    .sidebar-footer {
+      padding: 14px 16px; border-top: 1px solid var(--sidebar-border);
+      font-size: 0.72rem; color: #4a6a8a; line-height: 1.6;
+    }
+
+    .demo-tag {
+      position: fixed; top: 12px; right: 12px; z-index: 999;
+      background: var(--sidebar-bg); color: #7dd3fc; border: 1px solid var(--sidebar-border);
+      padding: 5px 12px; border-radius: 4px; font-family: monospace;
+      font-size: 0.68rem; letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-tag">DEMO 4 / 6 — SPLIT SIDEBAR DASHBOARD</div>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="site-name">Yizkor Books</div>
+      <div class="site-sub">Digital Search Archive · 11 books</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Books</div>
+      <div class="book-list">
+        <div class="book-item"><span class="book-name">Ataci</span><span class="book-lang">He</span></div>
+        <div class="book-item"><span class="book-name">Briceni</span><span class="book-lang">He</span></div>
+        <div class="book-item active"><span class="book-name">Briceva</span><span class="book-lang">He</span></div>
+        <div class="book-item"><span class="book-name">Edinet</span><span class="book-lang">Yi/He</span></div>
+        <div class="book-item"><span class="book-name">Khotin</span><span class="book-lang">He</span></div>
+        <div class="book-item"><span class="book-name">Lipcani 1</span><span class="book-lang">Yi</span></div>
+        <div class="book-item"><span class="book-name">Lipcani 2</span><span class="book-lang">Yi</span></div>
+        <div class="book-item"><span class="book-name">Novoselytsia</span><span class="book-lang">He</span></div>
+        <div class="book-item"><span class="book-name">Secureni</span><span class="book-lang">He</span></div>
+        <div class="book-item"><span class="book-name">Wyszogrod</span><span class="book-lang">He</span></div>
+        <div class="book-item"><span class="book-name">Zychlin</span><span class="book-lang">He</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-links">
+      <a class="sidebar-link" href="#"><span class="icon">⑂</span> GitHub Repository</a>
+      <a class="sidebar-link" href="#"><span class="icon">✉</span> Feedback Form</a>
+      <a class="sidebar-link" href="#"><span class="icon">?</span> Getting Started Wiki</a>
+      <a class="sidebar-link" href="#"><span class="icon">⚠</span> Report an Issue</a>
+    </div>
+    <div class="sidebar-footer">
+      He = Hebrew &nbsp;·&nbsp; Yi = Yiddish<br>
+      Scans linked via NYPL image archive.
+    </div>
+  </aside>
+
+  <!-- MAIN PANEL -->
+  <div class="main">
+    <div class="main-header">
+      <div class="breadcrumb">
+        <span>All Books</span>
+        <span class="sep">›</span>
+        <span class="active-book">Briceva</span>
+        <span class="sep">·</span>
+        <span>243 pages</span>
+      </div>
+      <div class="header-badges">
+        <span class="lang-chip">Hebrew</span>
+        <span class="pg-chip">243 pages</span>
+        <a class="tf-btn" href="#">JewishGen TownFinder ↗</a>
+      </div>
+    </div>
+
+    <div class="main-body">
+
+      <div class="about-panel">
+        <strong>About this book:</strong> The Briceva Yizkor Book commemorates a Jewish community from Moldova.
+        Written primarily in Hebrew. Scans are sourced from the New York Public Library digital collection.
+      </div>
+
+      <div class="search-panel">
+        <span class="search-label">Search this book</span>
+        <div class="search-row">
+          <div class="type-toggle">
+            <button class="t-btn active">Exact</button>
+            <button class="t-btn">Contains</button>
+          </div>
+          <input class="search-input" type="text" placeholder="Enter a name or term in Hebrew, Yiddish, or transliteration…" dir="auto">
+          <button class="search-btn">Search</button>
+        </div>
+      </div>
+
+      <div class="results-panel">
+        <div class="results-top">
+          <span class="label">Results</span>
+          <div class="results-meta-row">
+            <span class="count-pill">47 matches</span>
+            <span class="results-desc">for <strong>"ברנשטיין"</strong> in <strong>Briceva</strong></span>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Page</th><th>Line</th><th>Word</th></tr></thead>
+          <tbody>
+            <tr><td><a class="pg-btn" href="#">12</a></td><td>3</td><td class="rtl">ברנשטיין</td></tr>
+            <tr><td><a class="pg-btn" href="#">27</a></td><td>11</td><td class="rtl">ברנשטיין</td></tr>
+            <tr><td><a class="pg-btn" href="#">41</a></td><td>7</td><td class="rtl">ברנשטיין</td></tr>
+            <tr><td><a class="pg-btn" href="#">58</a></td><td>2</td><td class="rtl">ברנשטיין</td></tr>
+            <tr><td><a class="pg-btn" href="#">72</a></td><td>15</td><td class="rtl">ברנשטיין</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details class="info">
+        <summary>Instructions &amp; Known Issues</summary>
+        <div class="info-body">
+          <div class="info-cols">
+            <div>
+              <h4>How to Use</h4>
+              <ol>
+                <li>Select a book from the sidebar on the left.</li>
+                <li>Enter a search term in the book's language.</li>
+                <li>Click the Page number to open the original scan.</li>
+                <li>Use line and word numbers to locate the term in the scan.</li>
+              </ol>
+            </div>
+            <div>
+              <h4>Known Issues</h4>
+              <ul>
+                <li>Only exact and contains matches are currently supported.</li>
+                <li>Inconsistent line numbering due to variable page layouts.</li>
+                <li>Report issues on <a href="#">GitHub</a> or via the <a href="#">feedback form</a>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,94 +1,124 @@
 <html>
     <head>
         <meta charset="utf8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Searchable Yizkor Books</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/codemirror.css">
-        <link rel="stylesheet" href="/src/demo.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/codemirror.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/0.3.2/js/sql.js"></script>
-        <link rel="stylesheet" href="/src/style.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
-        <link rel="shortcut icon" href="/res/favicon.ico">
+        <link rel="stylesheet" href="src/style.css">
+        <link rel="shortcut icon" href="res/favicon.ico">
       </head>
     <body>
-      <br />
-      <h1>Searchable <a href="https://en.wikipedia.org/wiki/Yizkor_books">Yizkor Books</a></h1>
-      <a class="github-fork-ribbon left-top" href="https://github.com/Veverke/veverke.github.io" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>  
-      <p>
-          <div class="feedbackDiv">
-          <a href="https://forms.gle/xutj9MaZ6xoHh9L67"><img src="res/smileys.png" class="feedback"/></a>
-          <a href="https://forms.gle/xutj9MaZ6xoHh9L67"><img src="res/form.png" class="feedback" /></a>
+      <div class="top-bar">
+        <nav class="top-nav">
+          <a href="#">Home</a>
+          <a href="https://github.com/Veverke/veverke.github.io/wiki/Getting-Started">Getting Started</a>
+          <a href="https://github.com/Veverke/veverke.github.io/issues">Known Issues</a>
+          <a href="https://forms.gle/xutj9MaZ6xoHh9L67">Feedback</a>
+        </nav>
+        <a class="gh-btn" href="https://github.com/Veverke/veverke.github.io">&#9426; GitHub</a>
+      </div>
+      <header>
+        <div class="eyebrow"><span></span>Digital Jewish Memorial Archive<span></span></div>
+        <h1>Searchable <em>Yizkor</em> Books</h1>
+        <p class="tagline">Preserving the memory of Jewish communities destroyed in the Holocaust — digitized and made searchable</p>
+        <div class="stats-row">
+          <div class="stat"><span class="num" id="lblYBsCount">11</span><span class="lbl">Books</span></div>
+          <div class="stat"><span class="num">—</span><span class="lbl">Pages</span></div>
+          <div class="stat"><span class="num">He / Yi</span><span class="lbl">Languages</span></div>
+          <div class="stat"><span class="num">NYPL</span><span class="lbl">Image Source</span></div>
         </div>
-        <br /><br /> <br /><br /><br /> <br />
-        What are Yizkor Books ? Quoting <a href="https://en.wikipedia.org/wiki/Yizkor_books">Wikipedia</a>:<br />
-        Yizkor books are memorial books commemorating a Jewish community destroyed during the Holocaust. The books are published by former residents or landsmanshaft societies as remembrances of homes, people and ways of life lost during World War II. Yizkor books usually focus > on a town but may include sections on neighboring smaller communities.
-        Most of these books are written in Yiddish or Hebrew, some also include sections in English or other languages, depending on where they were published.
-        Since the 1990s, many of these books, or sections of them have been translated into English, digitized, and made available online.<br />
-        
-        <b>This site combines together different pieces of software that make yizkor book page scans digitally searchable, online.</b>
-        <br /><br />
+      </header>
+      <div class="content">
+        <details class="about">
+          <summary>What are Yizkor Books?</summary>
+          <div class="about-body">
+            Yizkor books are memorial books commemorating Jewish communities destroyed during the Holocaust, published by former residents as remembrances of homes, people, and ways of life lost during World War II.
+            Most are written in Yiddish or Hebrew. Since the 1990s, many have been digitized.
+            <strong>This site combines digitization software to make their scanned pages searchable online.</strong>
+          </div>
+        </details>
 
-          <b><u>Instructions</u></b>:
-            <ol>
-              <li>Pick up an Yizkor Book from the drop down list.</li>
-              <li>Enter a search term in the search textbox. Make sure your search term is in the yizkor book language (see language at the right of the drop down selection).</li>
-              <li>Clicking the page column in any given result entry, will open a new tab with that YB page.</li>
-              <li>Follow the line and word number direction in the result entry to match the term you searched. Keep in mind that the page number used is in synch with the book scans. The pagination number in the book pages itself is usually behind a couple of pages, usually accounting for the cover, table of contents, and so.</li>
-              <li>If you did not find the name with a hebrew spelling, try the Yiddish corresponding one. For example: ברנשטיין returns nothing on Briceni. But בערנשטיין does.</li>
-              <li>Check <a href="https://github.com/Veverke/veverke.github.io/wiki/Getting-Started">Getting Started wiki</a> for more.</li>
-            </ol>
+        <div class="sec-hdr"><h2>Select a book</h2></div>
+        <div class="book-panel">
+          <div class="book-row">
+            <div class="select-wrap">
+              <select id="ddlDbSelect" class="styled-select">
+                <option value="Ataci-56978964" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276004">Ataci</option>
+                <option value="Briceni-5574993" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276135">Briceni</option>
+                <option value="Briceva-5575305" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276136">Briceva</option>
+                <option value="Yedinetz-56633165" data-language="Yiddish/Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2277636">Edinet</option>
+                <option value="Khotin-5671697" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-1041561">Khotin</option>
+                <option value="Lipcani1-5911177" data-language="Yiddish" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276778">Lipcani 1</option>
+                <option value="Lipcani2-5752860" data-language="Yiddish" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276778">Lipcani 2</option>
+                <option value="Novoselitza-56611736" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-1048544">Novoselytsia</option>
+                <option value="Secureni-56632812" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-1054565">Secureni</option>
+                <option value="Wyszogrod-56698980" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-537630">Wyszogrod</option>
+                <option value="Zychlin-56623134" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-540274">Zychlin</option>
+              </select>
+            </div>
+            <span class="lang-pill" id="lblLanguageValue"></span>
+            <a class="tf-link" id="lnkTownFinderLink" target="_blank" rel="noopener noreferrer" href="">JewishGen TownFinder &#8599;</a>
+            <span class="pg-count" id="lblPages"></span>
+          </div>
+        </div>
+        <div class="sec-hdr"><h2>Search the archive</h2></div>
+        <div class="search-bar">
+          <div class="toggle-group">
+            <button class="t-btn active">Exact</button>
+            <button class="t-btn">Contains</button>
+          </div>
+          <input class="search-input" id="txtSearch" type="text" dir="auto" />
+          <button class="search-btn" id="btnSearch" disabled>Search</button>
+        </div>
+        <div class="sec-hdr"><h2>Results</h2></div>
+        <div class="results-meta" id="resultsMeta" style="display:none">
+          <span class="count-chip" id="resultsCount"></span>
+          <p id="resultsDesc" class="results-info-p"></p>
+        </div>
+        <div id="output" class="table-wrap"></div>
+        <div id="error" class="error"></div>
 
-            <b><u>Known Issues</u></b>:
-            <ol>
-              <li>Search 'engine' is very rudimentary. Currently only exact matches are supported.</li>
-              <li>If you face a problem, please open an issue <a href="https://github.com/Veverke/veverke.github.io/issues">here</a>. I guess it requires a github account (perhaps logging it with google account works). If you can't log in, please email me the problem directly.</li>
-              <li><a href="https://github.com/Veverke/YizkorBooksDigitalizer/issues/3">Incosistent line numbering is a known issue</a>. Yizkor books do not have a fixed layout, and Google Cloud Vision api does not OCRs these layouts consistently. Edinet matches are not accurate.</li>
-              <li><a href="https://github.com/Veverke/YizkorBooksDigitalizer/issues">Backend issues</a></li>
-              <li><a href="https://github.com/Veverke/veverke.github.io/issues">Frontend issues</a></li>
-            </ol>
-            
-        </p>
-        <hr />
-        <b><label id="lblYBsCount"></label></b><br /><br />
-        <select id="ddlDbSelect">
-          <option value="Ataci-56978964" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276004">Ataci</option>
-          <option value="Briceni-5574993" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276135">Briceni</option>
-          <option value="Briceva-5575305" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276136">Briceva</option>
-          <option value="Yedinetz-56633165" data-language="Yiddish/Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2277636">Edinet</option>
-          <option value="Khotin-5671697" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-1041561">Khotin</option>
-          <option value="Lipcani1-5911177" data-language="Yiddish" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276778">Lipcani 1</option>
-          <option value="Lipcani2-5752860" data-language="Yiddish" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-2276778">Lipcani 2</option>
-          <option value="Novoselitza-56611736" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-1048544">Novoselytsia</option>
-          <option value="Secureni-56632812" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-1054565">Secureni</option>
-          <option value="Wyszogrod-56698980" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-537630">Wyszogrod</option>
-          <option value="Zychlin-56623134" data-language="Hebrew" data-townfinder-link="https://www.jewishgen.org/Communities/community.php?usbgn=-540274">Zychlin</option>
-        </select>
+        <details class="info">
+          <summary>Instructions &amp; Known Issues</summary>
+          <div class="info-body">
+            <div class="info-cols">
+              <div>
+                <h4>How to Use</h4>
+                <ol>
+                  <li>Pick a Yizkor Book from the drop-down above.</li>
+                  <li>Enter a search term in the book's language (Hebrew or Yiddish).</li>
+                  <li>Click the <strong>Page</strong> number to open the original scan in a new tab.</li>
+                  <li>Use line and word numbers to locate your term in the scan.</li>
+                </ol>
+              </div>
+              <div>
+                <h4>Known Issues</h4>
+                <ul>
+                  <li>Only exact and contains matches are currently supported.</li>
+                  <li>Inconsistent line numbering due to variable page layouts.</li>
+                  <li>Report issues on <a href="https://github.com/Veverke/veverke.github.io/issues" target="_blank" rel="noopener noreferrer">GitHub</a> or via <a href="https://forms.gle/xutj9MaZ6xoHh9L67" target="_blank" rel="noopener noreferrer">feedback form</a>.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </details>
 
-        <label id="lblLanguageHeader">Language: </label><label id="lblLanguageValue"></label> <a id="lnkTownFinderLink" target="_blank" rel="noopener noreferrer" href="">JG TownFinder</a><label id="lblPages"></label>
-        <br />
-        <hr />
-        <label id="lblSearch">Search term: </label><input type="text" id="txtSearch" width="80"/> <label id="lblSearchType"></label> <select id="ddlSearchType"><option value="exact">Exact</option><option value="contains">Contains</option></select>
-        <!--<button id="btnSearch" disabled>-->
-        <button id="btnSearch" disabled>
-            Search
-        </button>
-        <hr />
-        <main>
-            <div id="error" class="error"></div>
-            <pre id="output">Results will be displayed here</pre>
-        </main>
+      </div><!-- /.content -->
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/sql/sql.min.js"></script>
-        <script src="/src/yizkor-books-search.js"></script>
-
-        <br />
-        <a href="https://forms.gle/xutj9MaZ6xoHh9L67">Feedback Form</a> <br /> <br />
-
-        <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1067321/t/6"></script>
-        <div class="flagCounter">
+      <footer>
+        <span>&copy; 2024 Searchable Yizkor Books &mdash; Preserving Jewish memory</span>
+        <div class="footer-links">
+          <a href="https://forms.gle/xutj9MaZ6xoHh9L67" target="_blank" rel="noopener noreferrer">Feedback Form</a>
+          <a href="https://github.com/Veverke/veverke.github.io/issues" target="_blank" rel="noopener noreferrer">Report an Issue</a>
+          <a href="https://github.com/Veverke/veverke.github.io/wiki/Getting-Started" target="_blank" rel="noopener noreferrer">Getting Started</a>
+        </div>
+        <div class="footer-counters">
+          <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1067321/t/6"></script>
           <a href="https://info.flagcounter.com/Biy5"><img src="https://s01.flagcounter.com/count2/Biy5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_250/viewers_0/labels_1/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
         </div>
-        
-        
-     </body>
+      </footer>
+
+      <script type="module" src="src/yizkor-books-search.js"></script>
+    </body>
 </html>

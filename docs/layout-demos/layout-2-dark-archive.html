@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layout 2 — Dark Archive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0d13;
+      --s1: #111520;
+      --s2: #1a2035;
+      --s3: #232c42;
+      --border: #2a3550;
+      --b-gold: #7a5f28;
+      --gold: #c9a84c;
+      --gold-l: #e0c068;
+      --text: #ddd0b8;
+      --muted: #8090aa;
+      --link: #c9a84c;
+      --font-d: 'Cinzel', Georgia, serif;
+      --font-b: 'Inter', system-ui, sans-serif;
+      --r: 6px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #050609; }
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--text);
+      max-width: 980px;
+      margin: 0 auto;
+      min-height: 100vh;
+      box-shadow: 0 0 100px rgba(0,0,0,0.9);
+    }
+
+    /* TOP NAV */
+    .top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 48px; background: var(--s1);
+      border-bottom: 1px solid var(--border); font-size: 0.76rem;
+    }
+    .top-nav { display: flex; gap: 22px; }
+    .top-nav a { color: var(--muted); text-decoration: none; letter-spacing: 0.04em; transition: color 0.15s; }
+    .top-nav a:hover { color: var(--gold); }
+    .gh-btn {
+      background: transparent; border: 1px solid var(--b-gold);
+      color: var(--gold); padding: 5px 14px; border-radius: 3px;
+      font-size: 0.74rem; text-decoration: none; letter-spacing: 0.06em;
+      transition: background 0.15s;
+    }
+    .gh-btn:hover { background: rgba(201,168,76,0.1); }
+
+    /* HEADER */
+    header {
+      padding: 44px 48px 36px;
+      background: linear-gradient(180deg, var(--s1) 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--b-gold);
+    }
+    .eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px; font-family: var(--font-b);
+    }
+    .eyebrow span { display: block; width: 32px; height: 1px; background: var(--b-gold); }
+    h1 {
+      font-family: var(--font-d); font-size: 2.8rem; font-weight: 600;
+      color: var(--text); letter-spacing: 0.06em; line-height: 1.1; margin-bottom: 10px;
+      text-shadow: 0 0 50px rgba(201,168,76,0.12);
+    }
+    h1 em { color: var(--gold-l); font-style: normal; }
+    .tagline { font-size: 0.9rem; color: var(--muted); font-weight: 300; letter-spacing: 0.02em; }
+    .stats-row { display: flex; gap: 36px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .stat .num { font-family: var(--font-d); font-size: 1.7rem; color: var(--gold); display: block; line-height: 1; }
+    .stat .lbl { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 5px; display: block; }
+
+    /* CONTENT */
+    .content { padding: 36px 48px 48px; }
+
+    /* SECTION HEADER */
+    .sec-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .sec-hdr h2 {
+      font-family: var(--font-d); font-size: 0.65rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--muted); font-weight: 400; white-space: nowrap;
+    }
+    .sec-hdr::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* BOOK PANEL */
+    .book-panel {
+      background: var(--s1); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 20px 22px; margin-bottom: 28px;
+    }
+    .book-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .select-wrap { position: relative; flex: 1; min-width: 210px; }
+    .select-wrap::after {
+      content: '▾'; position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 0.8rem;
+    }
+    .styled-select {
+      width: 100%; appearance: none; background: var(--s2); border: 1px solid var(--border);
+      color: var(--text); padding: 10px 32px 10px 12px; font-family: var(--font-b);
+      font-size: 0.9rem; border-radius: var(--r); cursor: pointer;
+    }
+    .styled-select:focus { outline: none; border-color: var(--b-gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
+    .lang-pill {
+      background: rgba(201,168,76,0.07); border: 1px solid var(--b-gold);
+      color: var(--gold); padding: 5px 14px; border-radius: 20px;
+      font-size: 0.76rem; font-weight: 500; letter-spacing: 0.05em;
+    }
+    .tf-link { color: var(--muted); font-size: 0.78rem; text-decoration: none; border-bottom: 1px solid var(--border); transition: all 0.15s; }
+    .tf-link:hover { color: var(--gold); border-color: var(--b-gold); }
+    .pg-count { background: var(--s2); border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 4px; font-size: 0.76rem; }
+
+    /* SEARCH */
+    .search-bar { display: flex; height: 52px; margin-bottom: 32px; }
+    .toggle-group { display: flex; border: 1px solid var(--border); border-right: none; border-radius: var(--r) 0 0 var(--r); overflow: hidden; }
+    .t-btn {
+      background: var(--s1); border: none; padding: 0 16px; font-family: var(--font-b);
+      font-size: 0.78rem; cursor: pointer; color: var(--muted);
+      border-right: 1px solid var(--border); transition: all 0.15s;
+    }
+    .t-btn.active { background: var(--b-gold); color: #0a0d13; font-weight: 600; }
+    .t-btn:last-child { border-right: none; }
+    .t-btn:not(.active):hover { color: var(--gold); }
+    .search-input {
+      flex: 1; background: var(--s2); border: 1px solid var(--border);
+      border-left: none; border-right: none; color: var(--text);
+      padding: 0 18px; font-size: 0.97rem; font-family: var(--font-b);
+    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { outline: none; border-color: var(--b-gold); }
+    .search-btn {
+      background: linear-gradient(135deg, #8a6a28, var(--gold));
+      color: #0a0d13; border: none; border-radius: 0 var(--r) var(--r) 0;
+      padding: 0 30px; font-family: var(--font-d); font-size: 0.82rem;
+      font-weight: 600; cursor: pointer; letter-spacing: 0.08em; transition: opacity 0.15s;
+    }
+    .search-btn:hover { opacity: 0.85; }
+
+    /* ABOUT (collapsible) */
+    details.about {
+      background: var(--s1); border: 1px solid var(--border);
+      border-radius: var(--r); margin-bottom: 28px;
+    }
+    details.about summary {
+      padding: 13px 18px; font-size: 0.8rem; cursor: pointer; list-style: none;
+      display: flex; align-items: center; gap: 8px; color: var(--muted); letter-spacing: 0.03em;
+    }
+    details.about summary::marker, details.about summary::-webkit-details-marker { display: none; }
+    details.about summary::before { content: '›'; font-size: 1rem; transition: transform 0.2s; }
+    details.about[open] summary::before { transform: rotate(90deg); }
+    .about-body { padding: 14px 18px 18px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+    .about-body strong { color: var(--text); }
+
+    /* RESULTS */
+    .results-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .count-chip {
+      background: rgba(201,168,76,0.1); border: 1px solid var(--b-gold);
+      color: var(--gold); padding: 4px 13px; border-radius: 20px;
+      font-family: var(--font-d); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+    }
+    .results-meta p { font-size: 0.85rem; color: var(--muted); }
+    .results-meta strong { color: var(--text); }
+    .table-wrap { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--s3); }
+    th {
+      padding: 12px 20px; text-align: center; font-family: var(--font-b);
+      font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); font-weight: 500;
+    }
+    td { padding: 12px 20px; border-top: 1px solid var(--border); text-align: center; font-size: 0.88rem; }
+    tbody tr:hover { background: var(--s1); }
+    .pg-btn {
+      display: inline-block; background: var(--s3); border: 1px solid var(--b-gold);
+      color: var(--gold); padding: 4px 14px; border-radius: 4px; text-decoration: none;
+      font-family: var(--font-d); font-size: 0.8rem; letter-spacing: 0.05em; transition: all 0.15s;
+    }
+    .pg-btn:hover { background: var(--gold); color: #0a0d13; }
+    .rtl { direction: rtl; unicode-bidi: embed; font-size: 1.05rem; color: var(--gold-l); }
+
+    /* INSTRUCTIONS */
+    details.info { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); margin-top: 28px; }
+    details.info summary {
+      padding: 13px 18px; font-size: 0.8rem; cursor: pointer; list-style: none;
+      display: flex; align-items: center; gap: 8px; color: var(--muted);
+    }
+    details.info summary::marker, details.info summary::-webkit-details-marker { display: none; }
+    details.info summary::before { content: '›'; font-size: 1rem; }
+    details.info[open] summary::before { content: '⌄'; }
+    .info-body { padding: 16px 22px 20px; border-top: 1px solid var(--border); font-size: 0.84rem; color: var(--muted); line-height: 1.8; }
+    .info-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .info-cols h4 { font-family: var(--font-d); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-weight: 400; }
+    .info-cols ol, .info-cols ul { padding-left: 18px; }
+    .info-cols li { margin-bottom: 6px; }
+    .info-cols a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--b-gold); }
+
+    /* FOOTER */
+    footer {
+      background: var(--s1); border-top: 1px solid var(--border);
+      padding: 18px 48px; display: flex; align-items: center;
+      justify-content: space-between; font-size: 0.74rem; color: var(--muted); flex-wrap: wrap; gap: 12px;
+    }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+    footer a:hover { color: var(--gold); }
+    .footer-links { display: flex; gap: 18px; }
+
+    .demo-tag {
+      position: fixed; top: 12px; right: 12px; z-index: 999;
+      background: var(--s3); color: var(--gold); border: 1px solid var(--b-gold);
+      padding: 5px 12px; border-radius: 3px; font-family: monospace;
+      font-size: 0.68rem; letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-tag">DEMO 2 / 6 — DARK ARCHIVE</div>
+
+<div class="top-bar">
+  <nav class="top-nav">
+    <a href="#">Home</a>
+    <a href="#">Getting Started</a>
+    <a href="#">Known Issues</a>
+    <a href="#">Feedback</a>
+  </nav>
+  <a class="gh-btn" href="#">⑂ GitHub</a>
+</div>
+
+<header>
+  <div class="eyebrow"><span></span>Digital Jewish Memorial Archive<span></span></div>
+  <h1>Searchable <em>Yizkor</em> Books</h1>
+  <p class="tagline">Preserving the memory of Jewish communities destroyed in the Holocaust — digitized and made searchable</p>
+  <div class="stats-row">
+    <div class="stat"><span class="num">11</span><span class="lbl">Books</span></div>
+    <div class="stat"><span class="num">2,400+</span><span class="lbl">Pages</span></div>
+    <div class="stat"><span class="num">He / Yi</span><span class="lbl">Languages</span></div>
+    <div class="stat"><span class="num">NYPL</span><span class="lbl">Image Source</span></div>
+  </div>
+</header>
+
+<div class="content">
+
+  <details class="about">
+    <summary>What are Yizkor Books?</summary>
+    <div class="about-body">
+      Yizkor books are memorial books commemorating Jewish communities destroyed during the Holocaust, published by former residents as remembrances of homes, people, and ways of life lost during World War II.
+      Most are written in Yiddish or Hebrew. Since the 1990s, many have been digitized.
+      <strong>This site combines digitization software to make their scanned pages searchable online.</strong>
+    </div>
+  </details>
+
+  <div class="sec-hdr"><h2>Select a book</h2></div>
+  <div class="book-panel">
+    <div class="book-row">
+      <div class="select-wrap">
+        <select class="styled-select">
+          <option>Ataci</option><option>Briceni</option><option selected>Briceva</option>
+          <option>Edinet</option><option>Khotin</option><option>Lipcani 1</option>
+          <option>Lipcani 2</option><option>Novoselytsia</option><option>Secureni</option>
+          <option>Wyszogrod</option><option>Zychlin</option>
+        </select>
+      </div>
+      <span class="lang-pill">Hebrew</span>
+      <a class="tf-link" href="#">JewishGen TownFinder ↗</a>
+      <span class="pg-count">243 pages</span>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><h2>Search the archive</h2></div>
+  <div class="search-bar">
+    <div class="toggle-group">
+      <button class="t-btn active">Exact</button>
+      <button class="t-btn">Contains</button>
+    </div>
+    <input class="search-input" type="text" placeholder="Enter a name or term in Hebrew, Yiddish, or transliteration…" dir="auto">
+    <button class="search-btn">Search</button>
+  </div>
+
+  <div class="sec-hdr"><h2>Results</h2></div>
+  <div class="results-meta">
+    <span class="count-chip">47 matches</span>
+    <p>for <strong>"ברנשטיין"</strong> in <strong>Briceva</strong></p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Page</th><th>Line</th><th>Word</th></tr></thead>
+      <tbody>
+        <tr><td><a class="pg-btn" href="#">12</a></td><td>3</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-btn" href="#">27</a></td><td>11</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-btn" href="#">41</a></td><td>7</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-btn" href="#">58</a></td><td>2</td><td class="rtl">ברנשטיין</td></tr>
+        <tr><td><a class="pg-btn" href="#">72</a></td><td>15</td><td class="rtl">ברנשטיין</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details class="info">
+    <summary>Instructions &amp; Known Issues</summary>
+    <div class="info-body">
+      <div class="info-cols">
+        <div>
+          <h4>How to Use</h4>
+          <ol>
+            <li>Pick a Yizkor Book from the drop-down above.</li>
+            <li>Enter a search term in the book's language (Hebrew or Yiddish).</li>
+            <li>Click the <strong>Page</strong> number to open the original scan in a new tab.</li>
+            <li>Use line and word numbers to locate your term in the scan.</li>
+          </ol>
+        </div>
+        <div>
+          <h4>Known Issues</h4>
+          <ul>
+            <li>Only exact and contains matches are currently supported.</li>
+            <li>Inconsistent line numbering due to variable page layouts.</li>
+            <li>Report issues on <a href="#">GitHub</a> or via <a href="#">feedback form</a>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </details>
+
+</div>
+
+<footer>
+  <span>Yizkor Books Digital Search · Open Source</span>
+  <div class="footer-links">
+    <a href="#">Feedback</a>
+    <a href="#">Report Issue</a>
+    <a href="#">Wiki</a>
+  </div>
+</footer>
+
+</body>
+</html>
